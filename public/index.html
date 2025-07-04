@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>黄金交易策略大师</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    
+    .price-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .price-label {
+      font-size: 1.2rem;
+    }
+    
+    .price-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #FFD700;
+    }
+    
+    .btn {
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    .btn:disabled {
+      background: linear-gradient(45deg, #555, #777);
+      cursor: not-allowed;
+    }
+    
+    .strategies-container {
+      display: grid;
+      gap: 20px;
+    }
+    
+    .strategy-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #FFD700;
+    }
+    
+    .strategy-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #FFD700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .strategy-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .strategy-label {
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    
+    .strategy-value {
+      font-weight: 600;
+    }
+    
+    .strategy-reason {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid #FFD700;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: rgba(231, 76, 60, 0.2);
+      border: 1px solid rgba(231, 76, 60, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .disclaimer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.85rem;
+      opacity: 0.7;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+    
+    @media (min-width: 768px) {
+      .strategies-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>黄金交易策略大师</h1>
+      <div class="subtitle">AI驱动的实时黄金交易策略</div>
+    </header>
+    
+    <div class="card">
+      <div class="price-container">
+        <div class="price-label">实时黄金价格</div>
+        <div class="price-value">{{ price }} 美元/盎司</div>
+      </div>
+      
+      <button 
+        class="btn"
+        @click="getStrategy"
+        :disabled="loading"
+      >
+        <i class="fas fa-bolt"></i>
+        {{ loading ? 'AI生成策略中...' : '获取交易策略' }}
+      </button>
+    </div>
+    
+    <div v-if="strategies.length > 0" class="strategies-container">
+      <div v-for="(strategy, index) in strategies" :key="index" class="strategy-card">
+        <div class="strategy-title">
+          <i class="fas fa-chess-knight"></i>
+          {{ strategy.title }}
+        </div>
+        
+        <div class="strategy-detail">
+          <span class="strategy-label">适用场景：</span>
+          <span class="strategy-value">{{ strategy.scenario }}</span>
+        </div>
+        
+        <div class="strategy-detail">
+          <span class="strategy-label">入场点位：</span>
+          <span class="strategy-value">{{ strategy.entry }}</span>
+        </div>
+        
+        <div class="strategy-detail">
+          <span class="strategy-label">目标价位：</span>
+          <span class="strategy-value">{{ strategy.target }}</span>
+        </div>
+        
+        <div class="strategy-detail">
+          <span class="strategy-label">止损点位：</span>
+          <span class="strategy-value">{{ strategy.stopLoss }}</span>
+        </div>
+        
+        <div class="strategy-detail">
+          <span class="strategy-label">预期胜率：</span>
+          <span class="strategy-value">{{ strategy.probability }}</span>
+        </div>
+        
+        <div class="strategy-reason">
+          <div class="strategy-label">策略逻辑：</div>
+          <p>{{ strategy.reason }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div v-else-if="loading" class="card loading">
+      <div class="spinner"></div>
+      <p>AI正在分析市场数据，生成最佳策略...</p>
+    </div>
+    
+    <div v-if="error" class="error">
+      <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+    
+    <div class="disclaimer">
+      免责声明：本策略仅供参考，不构成任何投资建议。市场有风险，投资需谨慎。
+    </div>
+  </div>
+
+  <!-- 引入 Vue 3 -->
+  <script src="https://unpkg.com/vue@3.2.47/dist/vue.global.js"></script>
+  
+  <script>
+    const { createApp, ref, onMounted } = Vue;
+    
+    createApp({
+      setup() {
+        const price = ref(0);
+        const strategies = ref([]);
+        const loading = ref(false);
+        const error = ref(null);
+        
+        // 获取实时金价
+        const fetchGoldPrice = async () => {
+          try {
+            const response = await fetch('/api/price');
+            const data = await response.json();
+            
+            if (data.success) {
+              price.value = data.price;
+            } else {
+              error.value = data.error || '获取金价失败';
+            }
+          } catch (err) {
+            error.value = '网络错误，请稍后重试';
+          }
+        };
+        
+        // 获取交易策略
+        const getStrategy = async () => {
+          if (!price.value) {
+            error.value = '请等待金价加载完成';
+            return;
+          }
+          
+          loading.value = true;
+          strategies.value = [];
+          error.value = null;
+          
+          try {
+            const response = await fetch('/api/strategy', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ price: price.value })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+              strategies.value = data.strategy;
+            } else {
+              error.value = data.error || '生成策略失败';
+            }
+          } catch (err) {
+            error.value = '网络错误，请稍后重试';
+          } finally {
+            loading.value = false;
+          }
+        };
+        
+        // 初始化获取金价
+        onMounted(fetchGoldPrice);
+        
+        // 每分钟更新金价
+        setInterval(fetchGoldPrice, 60000);
+        
+        return {
+          price,
+          strategies,
+          loading,
+          error,
+          getStrategy
+        };
+      }
+    }).mount('body');
+  </script>
+</body>
+</html> 

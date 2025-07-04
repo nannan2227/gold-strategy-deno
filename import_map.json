@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "oak": "https://deno.land/x/oak/mod.ts",
+    "deno_dom": "https://deno.land/x/deno_dom/deno-dom-wasm.ts",
+    "dotenv": "https://deno.land/x/dotenv/mod.ts"
+  }
+} 
