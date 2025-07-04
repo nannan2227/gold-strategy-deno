@@ -1,6 +1,6 @@
 /// <reference lib="deno.ns" />
 import { Application, Router, send, Context } from "oak";
-import { gzip } from "https://deno.land/x/oak_compress@1.0.2/mod.ts";
+import { gzip } from "https://deno.land/x/oak_compress@1.0.1/mod.ts";
 import { getGoldPrice } from "../utils/goldPrice.ts";
 import { getStrategySignal } from "../utils/strategyService.ts";
 
