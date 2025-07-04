@@ -18,7 +18,9 @@ export async function getGoldPrice(): Promise<number> {
         const data = await response.json();
         
         if (url.includes('goldprice.org')) return data.price;
-        if (url.includes('metalpriceapi.com')) return 1 / data.rates.USD;
+        if (url.includes('metalpriceapi.com') && data.rates && data.rates.USD) {
+          return 1 / data.rates.USD;
+        }
         if (url.includes('swissquote.com')) return data[0].spreadProfilePrices[0].ask;
       }
     } catch (error) {
