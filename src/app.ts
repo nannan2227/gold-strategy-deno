@@ -44,8 +44,6 @@ app.use(async (ctx: Context, next: () => Promise<unknown>) => {
   await next();
 });
 
-
-
 // 静态文件服务
 app.use(async (ctx: Context, next: () => Promise<unknown>) => {
   if (ctx.request.url.pathname.startsWith("/api")) {
