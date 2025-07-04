@@ -17,7 +17,7 @@ router.get("/api/price", async (ctx: Context) => {
 
 // 生成交易策略
 router.post("/api/strategy", async (ctx: Context) => {
-  const body = await ctx.request.body.value;
+  const body = await ctx.request.body({ type: "json" }).value;
   const { price } = body;
   if (!price) {
     ctx.response.body = { success: false, error: "Price is required" };
