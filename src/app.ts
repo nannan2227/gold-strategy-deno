@@ -18,9 +18,7 @@ router.get("/api/price", async (ctx: Context) => {
 // 生成交易策略
 router.post("/api/strategy", async (ctx: Context) => {
   try {
-    // 使用更兼容的方式
-    const result = ctx.request.body();
-    const body = await result.value;
+    const body = await ctx.request.body.value;
     
     if (!body || typeof body !== 'object') {
       ctx.response.body = { success: false, error: "Invalid request body" };
