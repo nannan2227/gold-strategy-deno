@@ -303,37 +303,46 @@
           }
         };
         
-        // 获取交易策略
-        const getStrategy = async () => {
-          if (!price.value) {
-            error.value = '请等待金价加载完成';
-            return;
-          }
-          
-          loading.value = true;
-          strategies.value = [];
-          error.value = null;
-          
-          try {
-            const response = await fetch('/api/strategy', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ price: price.value })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-              strategies.value = data.strategy;
-            } else {
-              error.value = data.error || '生成策略失败';
-            }
-          } catch (err) {
-            error.value = '网络错误，请稍后重试';
-          } finally {
-            loading.value = false;
-          }
-        };
+        // 更新获取策略函数
+const getStrategy = async () => {
+  if (!price.value) {
+    error.value = '请等待金价加载完成';
+    return;
+  }
+  
+  loading.value = true;
+  strategies.value = [];
+  error.value = null;
+  
+  try {
+    const response = await fetch('/api/strategy', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({ price: price.value })
+    });
+    
+    // 处理非 200 响应
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      strategies.value = data.strategy;
+    } else {
+      throw new Error(data.error || '生成策略失败');
+    }
+  } catch (err) {
+    error.value = `错误: ${err.message}`;
+    console.error("API请求错误:", err);
+  } finally {
+    loading.value = false;
+  }
+};
         
         // 初始化获取金价
         onMounted(fetchGoldPrice);
