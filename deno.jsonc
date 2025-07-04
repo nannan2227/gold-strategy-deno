@@ -2,7 +2,9 @@
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-env src/app.ts"
   },
-  "imports": {
-    "oak": "https://deno.land/x/oak@v17.1.4/mod.ts"
-  }
+  "exclude": ["node_modules/", ".git/"],
+  "compilerOptions": {
+    "strict": true
+  },
+  "importMap": "import_map.json"
 }
