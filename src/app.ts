@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 import { Application, Router, send, Context } from "oak";
 import { getGoldPrice } from "../utils/goldPrice.ts";
-import { getStrategySignal } from "../utils/strategyService.ts";
+import { getStrategy } from "../utils/strategyService.ts";
 
 const app = new Application();
 const router = new Router();
@@ -25,7 +25,7 @@ router.post("/api/strategy", async (ctx: Context) => {
     return;
   }
   try {
-    const strategy = getStrategySignal(price);
+    const strategy = await getStrategy(price);
     ctx.response.body = { success: true, strategy };
   } catch (error) {
     ctx.response.body = { success: false, error: (error as Error).message };

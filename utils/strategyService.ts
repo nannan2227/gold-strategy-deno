@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 
 const DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions";
-const API_KEY = Deno.env.get("DEEPSEEK_API_KEY");
+const API_KEY = config().DEEPSEEK_API_KEY;
 
 const strategyCache = new Map<number, { data: any; timestamp: number }>();
 
