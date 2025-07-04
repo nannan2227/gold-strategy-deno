@@ -1,6 +1,5 @@
 /// <reference lib="deno.ns" />
 import { Application, Router, send, Context } from "oak";
-import { gzip } from "https://deno.land/x/oak_compress@1.0.1/mod.ts";
 import { getGoldPrice } from "../utils/goldPrice.ts";
 import { getStrategySignal } from "../utils/strategyService.ts";
 
@@ -45,8 +44,7 @@ app.use(async (ctx: Context, next: () => Promise<unknown>) => {
   await next();
 });
 
-// gzip 压缩中间件
-// gzip && app.use(gzip());
+
 
 // 静态文件服务
 app.use(async (ctx: Context, next: () => Promise<unknown>) => {
