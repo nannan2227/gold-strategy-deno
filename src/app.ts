@@ -17,16 +17,26 @@ router.get("/api/price", async (ctx: Context) => {
 
 // 生成交易策略
 router.post("/api/strategy", async (ctx: Context) => {
-  const body = await ctx.request.body.value;
-  const { price } = body;
-  if (!price) {
-    ctx.response.body = { success: false, error: "Price is required" };
-    return;
-  }
   try {
+    // 使用更兼容的方式
+    const result = ctx.request.body();
+    const body = await result.value;
+    
+    if (!body || typeof body !== 'object') {
+      ctx.response.body = { success: false, error: "Invalid request body" };
+      return;
+    }
+    
+    const { price } = body;
+    if (!price) {
+      ctx.response.body = { success: false, error: "Price is required" };
+      return;
+    }
+    
     const strategy = await getStrategy(price);
     ctx.response.body = { success: true, strategy };
   } catch (error) {
+    console.error("Strategy error:", error);
     ctx.response.body = { success: false, error: (error as Error).message };
   }
 });
