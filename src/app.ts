@@ -46,7 +46,7 @@ app.use(async (ctx: Context, next: () => Promise<unknown>) => {
 });
 
 // gzip 压缩中间件
-gzip && app.use(gzip());
+// gzip && app.use(gzip());
 
 // 静态文件服务
 app.use(async (ctx: Context, next: () => Promise<unknown>) => {
