@@ -18,7 +18,29 @@ router.get("/api/price", async (ctx: Context) => {
 // 生成交易策略
 router.post("/api/strategy", async (ctx: Context) => {
   try {
-    const body = await ctx.request.body.value;
+    // 尝试多种方式获取 body
+    let body;
+    
+    // 方式 1：直接获取
+    try {
+      body = await ctx.request.body.value;
+    } catch {
+      // 方式 2：指定类型
+      try {
+        body = await ctx.request.body({ type: "json" }).value;
+      } catch {
+        // 方式 3：分步获取
+        try {
+          const result = ctx.request.body();
+          body = await result.value;
+        } catch {
+          // 方式 4：最后尝试
+          body = await ctx.request.body.value;
+        }
+      }
+    }
+    
+    console.log("Received body:", body); // 调试信息
     
     if (!body || typeof body !== 'object') {
       ctx.response.body = { success: false, error: "Invalid request body" };
