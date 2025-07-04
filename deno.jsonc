@@ -1,9 +1,8 @@
 {
-  "importMap": "import_map.json",
   "tasks": {
-    "start": "deno run --allow-net --allow-read src/app.ts"
+    "start": "deno run --allow-net --allow-read --allow-env src/app.ts"
   },
-  "compilerOptions": {
-    "lib": ["dom", "esnext"]
+  "imports": {
+    "oak": "https://deno.land/x/oak@v17.1.4/mod.ts"
   }
-} 
+}
