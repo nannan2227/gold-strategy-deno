@@ -1,4 +1,3 @@
-
 import { Application, Router, send, Context } from "oak";
 import { getGoldPrice } from "../utils/goldPrice.ts";
 import { getStrategy } from "../utils/strategyService.ts";
@@ -18,8 +17,7 @@ router.get("/api/price", async (ctx: Context) => {
 
 // 生成交易策略
 router.post("/api/strategy", async (ctx: Context) => {
-  const result = ctx.request.body();
-  const body = await result.value;
+  const body = await ctx.request.body.value;
   const { price } = body;
   if (!price) {
     ctx.response.body = { success: false, error: "Price is required" };
